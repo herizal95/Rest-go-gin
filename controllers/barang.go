@@ -61,7 +61,7 @@ func BarangAdd(c *gin.Context) {
 // Get :id
 func BarangGetID(c *gin.Context) {
 
-	var data models.Barang
+	var data []models.Barang
 
 	db := c.MustGet("db").(*gorm.DB)
 	if errr := db.Where("id = ?", c.Param("id")).First(&data).Error; errr != nil {
