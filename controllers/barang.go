@@ -61,14 +61,18 @@ func BarangAdd(c *gin.Context) {
 // Get :id
 func BarangGetID(c *gin.Context) {
 
-	var data models.Barang
+	var data []models.Barang
 
 	db := c.MustGet("db").(*gorm.DB)
 	if errr := db.Where("id = ?", c.Param("id")).First(&data).Error; errr != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message error": "Data Not Found!"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": data})
+	c.JSON(http.StatusOK, gin.H{
+		"status":   1,
+		"responce": 200,
+		"data":     data,
+	})
 
 }
 
