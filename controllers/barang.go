@@ -68,7 +68,11 @@ func BarangGetID(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"message error": "Data Not Found!"})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": data})
+	c.JSON(http.StatusOK, gin.H{
+		"status":   1,
+		"responce": 200,
+		"data":     data,
+	})
 
 }
 
