@@ -32,7 +32,11 @@ func BarangView(con *gin.Context) {
 	var data []models.Barang
 	db.Find(&data)
 
-	con.JSON(http.StatusOK, gin.H{"data": data})
+	con.JSON(http.StatusOK, gin.H{
+		"responce": 200,
+		"status":   1,
+		"data":     data,
+	})
 }
 
 // Create New
@@ -90,3 +94,34 @@ func BarangDelete(c *gin.Context) {
 }
 
 // update :id
+func BarangUpdate(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+
+	var data models.Barang
+
+	if err := db.Where("id=?", c.Param("id")).First(&data).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": "data not found!"})
+		return
+	}
+
+	var input UpdateBarang
+	if err := c.ShouldBind(&input); err != nil {
+		c.JSON(http.StatusBadGateway, gin.H{"msg": err.Error()})
+	}
+
+	var inputUpdate models.Barang
+	inputUpdate.NamaBarang = input.NamaBarang
+	inputUpdate.JenisBarang = input.JenisBarang
+	inputUpdate.KodeBarang = input.KodeBarang
+	inputUpdate.HargaBeli = input.HargaBeli
+	inputUpdate.HargaJual = input.HargaJual
+	inputUpdate.Kategori = input.Kategori
+
+	db.Model(&data).Update(inputUpdate)
+
+	c.JSON(http.StatusOK, gin.H{
+		"status":   1,
+		"responce": 200,
+		"data":     data,
+	})
+}

@@ -26,6 +26,7 @@ func SettingRoutes(db *gorm.DB) *gin.Engine {
 	routes.POST("/barang", controllers.BarangAdd)
 	routes.GET("/barang/:id", controllers.BarangGetID)
 	routes.DELETE("/barang/:id", controllers.BarangDelete)
+	routes.PATCH("/barang/:id", controllers.BarangUpdate)
 
 	return routes
 
